@@ -19,12 +19,11 @@
           <a href="/" class="text-biru-langit-700 hover:text-kuning-emas-600 font-semibold transition-colors">Home</a>
           <a href="/about" class="text-biru-langit-700 hover:text-kuning-emas-600 font-semibold transition-colors">About</a>
           
-          <!-- Biru Langit News Dropdown -->
-          <div class="relative group">
-            <button class="text-biru-langit-700 hover:text-kuning-emas-600 font-semibold transition-colors flex items-center">
-              Biru Langit News
-            </button>
-          </div>
+        <!-- Biru Langit News Link -->
+<a href="/news" class="text-biru-langit-700 hover:text-kuning-emas-600 font-semibold transition-colors flex items-center">
+  Biru Langit News
+</a>
+
 
           <!-- Student Info Dropdown -->
           <div class="relative group">
@@ -55,10 +54,10 @@
       <div v-if="mobileMenuOpen" class="md:hidden border-t border-biru-langit-100 py-4">
         <div class="space-y-2">
           <a href="/" class="block px-4 py-2 text-biru-langit-700 hover:bg-biru-langit-50 rounded-lg">Home</a>
-          <a href="#about" class="block px-4 py-2 text-biru-langit-700 hover:bg-biru-langit-50 rounded-lg">About</a>
-          <a href="#news" class="block px-4 py-2 text-biru-langit-700 hover:bg-biru-langit-50 rounded-lg">Biru Langit News</a>
-          <a href="#student-info" class="block px-4 py-2 text-biru-langit-700 hover:bg-biru-langit-50 rounded-lg">Student Info</a>
-          <a href="#kontak" class="block px-4 py-2 text-biru-langit-700 hover:bg-biru-langit-50 rounded-lg">Kontak</a>
+          <a href="/about" class="block px-4 py-2 text-biru-langit-700 hover:bg-biru-langit-50 rounded-lg">About</a>
+          <a href="/news" class="block px-4 py-2 text-biru-langit-700 hover:bg-biru-langit-50 rounded-lg">Biru Langit News</a>
+          <a href="/student-info" class="block px-4 py-2 text-biru-langit-700 hover:bg-biru-langit-50 rounded-lg">Student Info</a>
+          <a href="/kontak" class="block px-4 py-2 text-biru-langit-700 hover:bg-biru-langit-50 rounded-lg">Kontak</a>
         </div>
       </div>
     </div>

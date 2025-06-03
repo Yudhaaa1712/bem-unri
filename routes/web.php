@@ -10,10 +10,14 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', function () {
     return view('about');
 })->name('about');
-// News pages
+
 Route::get('/kemendagri', function () {
     return view('kemendagri');
 })->name('kemendagri');
+
+Route::get('/news', function () {
+    return view('news');
+})->name('news');
 
 // API Routes for Vue.js components
 Route::prefix('api')->group(function () {

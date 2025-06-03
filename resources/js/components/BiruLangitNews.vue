@@ -1,4 +1,4 @@
-<!-- resources/js/components/BiruLangitNews.vue -->
+<!-- resources/js/components/BiruLangitNews.vue (Updated) -->
 <template>
   <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -44,10 +44,10 @@
         </button>
       </div>
 
-      <!-- News Grid -->
+      <!-- News Grid - Show only 3 latest news -->
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
         <!-- News Card 1 -->
-        <article class="card group cursor-pointer">
+        <article class="card group cursor-pointer" @click="goToNews">
           <div class="aspect-video bg-gradient-to-br from-biru-langit-100 to-kuning-emas-100 flex items-center justify-center">
             <div class="text-center">
               <div class="w-16 h-16 bg-biru-langit-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-biru-langit-600 transition-colors">
@@ -77,7 +77,7 @@
         </article>
 
         <!-- News Card 2 -->
-        <article class="card group cursor-pointer">
+        <article class="card group cursor-pointer" @click="goToNews">
           <div class="aspect-video bg-gradient-to-br from-kuning-emas-100 to-biru-langit-100 flex items-center justify-center">
             <div class="text-center">
               <div class="w-16 h-16 bg-kuning-emas-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-kuning-emas-600 transition-colors">
@@ -107,7 +107,7 @@
         </article>
 
         <!-- News Card 3 -->
-        <article class="card group cursor-pointer">
+        <article class="card group cursor-pointer" @click="goToNews">
           <div class="aspect-video bg-gradient-to-br from-biru-langit-100 to-kuning-emas-100 flex items-center justify-center">
             <div class="text-center">
               <div class="w-16 h-16 bg-biru-langit-500 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-biru-langit-600 transition-colors">
@@ -137,8 +137,11 @@
         </article>
       </div>
 
+      <!-- Call to Action -->
       <div class="text-center">
-        <button class="btn-primary px-8 py-4 text-lg">Lihat Semua Berita</button>
+        <a href="/news" class="btn-primary px-8 py-4 text-lg inline-block">
+          Lihat Semua Berita
+        </a>
       </div>
     </div>
   </section>
@@ -150,6 +153,11 @@ export default {
   data() {
     return {
       activeFilter: 'all'
+    }
+  },
+  methods: {
+    goToNews() {
+      window.location.href = '/news'
     }
   }
 }
