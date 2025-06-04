@@ -19,6 +19,14 @@ Route::get('/news', function () {
     return view('news');
 })->name('news');
 
+Route::get('/student-info', function () {
+    return view('student-info');
+})->name('student.info');
+
+Route::get('/contact', function () {
+    return view('contact');
+})->name('contact');
+
 // API Routes for Vue.js components
 Route::prefix('api')->group(function () {
     Route::get('/news', [NewsController::class, 'index'])->name('api.news');
@@ -26,5 +34,3 @@ Route::prefix('api')->group(function () {
     Route::get('/student-info', [StudentInfoController::class, 'index'])->name('api.student.info');
 });
 
-// Static pages
-Route::view('/contact', 'pages.contact')->name('contact');
