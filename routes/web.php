@@ -6,6 +6,8 @@ use App\Http\Controllers\NewsController;
 use App\Http\Controllers\StudentInfoController;
 
 // Main pages
+
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/about', function () {
     return view('about');
