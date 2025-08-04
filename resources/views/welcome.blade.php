@@ -21,7 +21,7 @@
         
         <title>BEM UNRI 2025 - Kabinet Biru Langit</title>
         <link rel="canonical" href="{{ url('/') }}">
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+      <link rel="icon" type="image/png" href="{{ asset('images/logobem.png') }}">
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
