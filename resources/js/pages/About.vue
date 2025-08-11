@@ -1,38 +1,8 @@
 <template>
   <div class="min-h-screen bg-white">
     <Header />
-    
     <!-- Visi Misi Section -->
     <VisiMisi />
-    
-    <!-- Struktur Organisasi Section -->
-    <section class="py-8 sm:py-12 lg:py-20 bg-white">
-      <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-8 sm:mb-12 lg:mb-16">
-          <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#034caa] to-[#003375] bg-clip-text text-transparent mb-4">
-            Struktur <span class="bg-gradient-to-r from-[#eb7118] to-[#ffe500] bg-clip-text text-transparent">Organisasi</span>
-          </h2>
-        </div>
-
-        <!-- Organigram Container -->
-        <div 
-          ref="organizationChart"
-          class="bg-gradient-to-br from-blue-50 to-yellow-50 p-3 sm:p-4 md:p-6 lg:p-8 rounded-xl sm:rounded-2xl lg:rounded-3xl shadow-lg sm:shadow-xl lg:shadow-2xl border border-white sm:border-2 lg:border-4 transition-all duration-1000 ease-out"
-          :class="isChartVisible ? 'scale-100 opacity-100' : 'scale-95 sm:scale-85 opacity-75'"
-        >
-          <div class="bg-white rounded-lg sm:rounded-xl lg:rounded-2xl overflow-hidden shadow-inner">
-            <img 
-              :src="organizationChartImage" 
-              alt="Struktur Organisasi BEM UNRI" 
-              class="w-full object-contain transition-all duration-1000 ease-out"
-              :class="getChartImageClasses()"
-              @error="handleImageError"
-              loading="lazy"
-            />
-          </div>
-        </div>    
-      </div>
-    </section>
     
     <!-- Departemen Section -->
     <section class="py-8 sm:py-12 lg:py-20 bg-white">
@@ -64,11 +34,11 @@
               <!-- Overlay with improved mobile visibility -->
               <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent sm:from-black/60 sm:via-transparent">
                 <div class="absolute bottom-3 sm:bottom-6 lg:bottom-8 left-3 sm:left-6 lg:left-8 right-3 sm:right-6 lg:right-8">
-                  <h3 class="text-white text-sm sm:text-xl md:text-2xl lg:text-3xl font-bold tracking-wide sm:tracking-wider">
-                    Departemen
+                  <h3 class="custom-kementrian text-white text-sm sm:text-xl md:text-2xl lg:text-3xl tracking-wide sm:tracking-wider">
+                   Kementrian
                   </h3>
-                  <h4 class="text-yellow-400 text-lg sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-black leading-tight">
-                    {{ department.name }}
+                  <h4 class="text-yellow-400 text-lg sm:text-2xl md:text-lg lg:text-lg xl:text-3xl font-black leading-tight ">
+                    {{ department.id }}
                   </h4>
                 </div>
               </div>
@@ -113,28 +83,94 @@ export default {
       screenSize: 'mobile',
       departments: [
         {
-          id: 'keilmuan',
-          name: 'KEILMUAN',
+          id: 'Sekretaris Kabinet ',
+          name: 'Sekretaris Kabinet',
           image: '/images/fotbarkbl.jpeg',
-          url: '/kemendagri'
+          url: '/kemensekab'
         },
+
         {
-          id: 'eld',
-          name: 'ELD',
+          id: 'Agraria dan Lingkungan Hidup ',
+          name: 'Agraria dan Lingkungan Hidup',
+          image: '/images/fotbarkbl.jpeg',
+          url: '/kemenagrarialh'
+        },
+
+        {
+          id: 'Riset dan Inovasi Mahasiswa ',
+          name: 'Riset dan Inovasi Mahasiswa',
+          image:  '/images/fotbarkbl.jpeg',
+          url: '/kemenrisma'
+        },
+
+        {
+          id: 'Sosial dan Politik ',
+          name: 'Sosial dan Politik ',
+          image: '/images/fotbarkbl.jpeg',
+          url: '/kemensospol'
+        },
+
+        {
+          id: 'Hukum dan Advokasi Kesejahteraan Mahasiswa  ',
+          name: 'Hukum dan Advokasi Kesejahteraan Mahasiswa  ',
+          image: '/images/fotbarkbl.jpeg',
+          url: '/kemenhadkesma'
+        },
+        
+        {
+          id: 'Dalam Universitas ',
+          name: 'Dalam Universitas ',
+          image: '/images/fotbarkbl.jpeg',
+          url: '/kemendaniv'
+        },
+        
+        {
+          id: 'Pemberdayaan Perempuan  ',
+          name: 'Pemberdayaan Perempuan  ',
+          image: '/images/fotbarkbl.jpeg',
+          url: '/kemenpp'
+        },
+        
+        {
+          id: 'Kebudayaan, Seni, dan Olahraga ',
+          name: 'Kebudayaan, Seni, dan Olahraga ',
+          image: '/images/fotbarkbl.jpeg',
+          url: '/kemenkesra'
+        },
+        
+        {
+          id: 'Ekonomi Kreatif  ',
+          name: 'Ekonomi Kreatif  ',
+          image: '/images/fotbarkbl.jpeg',
+          url: '/kemenekraf'
+        },
+        
+        {
+          id: 'Komunikasi dan Informasi  ',
+          name: 'Komunikasi dan Informasi  ',
+          image: '/images/fotbarkbl.jpeg',
+          url: '/kemenkominfo'
+        },
+
+        {
+          id: 'Luar Universitas  ',
+          name: 'Luar Universitas  ',
+          image: '/images/fotbarkbl.jpeg',
+          url: '/kemenluniv'
+        },
+
+        {
+          id: 'Sosial dan Masyarakat  ',
+          name: 'Sosial dan Masyarakat',
           image: '/images/fotbarkbl.jpeg',
           url: '/kemensosmas'
         },
+
         {
-          id: 'pengmas',
-          name: 'PENGMAS',
+          id: 'Keuangan ',
+          name: 'Keuangan ',
           image: '/images/fotbarkbl.jpeg',
-          url: '/pengmas'
-        },
-        {
-          id: 'kastrat',
-          name: 'KASTRAT',
-          image: '/images/fotbarkbl.jpeg',
-          url: '/kastrat'
+          url: '/kemenkeu'
         }
       ]
     }
@@ -143,6 +179,7 @@ export default {
     this.initScrollObserver()
     this.detectScreenSize()
     this.addResizeListener()
+    this.loadCustomFont()
   },
   beforeUnmount() {
     if (this.observer) {
@@ -151,6 +188,25 @@ export default {
     window.removeEventListener('resize', this.detectScreenSize)
   },
   methods: {
+    loadCustomFont() {
+      // Preload font dengan path yang benar
+      const link = document.createElement('link')
+      link.rel = 'preload'
+      link.href = '/fonts/aston script/AstonScript.ttf'
+      link.as = 'font'
+      link.type = 'font/ttf'
+      link.crossOrigin = 'anonymous'
+      document.head.appendChild(link)
+      
+      // Force reload font jika belum load
+      setTimeout(() => {
+        const elements = document.querySelectorAll('.custom-kementrian')
+        elements.forEach(el => {
+          el.style.fontFamily = '"Aston Script", "Dancing Script", "Brush Script MT", cursive, sans-serif'
+        })
+      }, 1000)
+    },
+    
     initScrollObserver() {
       const options = {
         root: null,
@@ -218,7 +274,6 @@ export default {
       console.error('Error loading organization chart image:', event.target.src)
       event.target.style.display = 'none'
       
-      // Fallback: show text message
       const container = event.target.parentElement
       if (container) {
         container.innerHTML = `
@@ -233,7 +288,6 @@ export default {
       console.warn(`Failed to load image for department: ${departmentId}`)
       event.target.src = '/images/placeholder-department.jpg'
       
-      // If placeholder also fails, use a colored background
       event.target.onerror = () => {
         const container = event.target.parentElement
         if (container) {
@@ -250,6 +304,40 @@ export default {
 </script>
 
 <style scoped>
+/* Preload dan definisi font dengan path yang benar */
+@font-face {
+  font-family: 'Aston Script';
+  src: url('/fonts/aston script/AstonScript.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Import Google Fonts sebagai fallback */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Great+Vibes&display=swap');
+
+/* Style untuk tulisan Kementrian dengan prioritas tinggi */
+.custom-kementrian {
+  font-family: 'Aston Script', 'Dancing Script', 'Great Vibes', 'Brush Script MT', cursive, sans-serif !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  text-transform: capitalize !important;
+  letter-spacing: 1px !important;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.5) !important;
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
+  font-size: 6rem !important;
+  margin-bottom: 20px !important;
+}
+
+/* Force font loading */
+.custom-kementrian::before {
+  content: '';
+  font-family: 'Aston Script';
+  visibility: hidden;
+  position: absolute;
+}
+
 /* Ensure smooth scrolling and touch optimization */
 * {
   -webkit-tap-highlight-color: transparent;

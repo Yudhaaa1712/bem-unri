@@ -3,30 +3,31 @@
     <Header />
     
     <!-- News Hero Section -->
-    <section 
-      class="relative min-h-[60vh] sm:min-h-[70vh] lg:min-h-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
-      :style="{ backgroundImage: `url('/images/fotbarkbl.jpeg')` }"
-    >
-      <div class="absolute inset-0 bg-black/20"></div>
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="text-center">
-          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6">
-            <span class="bg-gradient-to-r from-[#034caa] to-[#003375] bg-clip-text text-transparent">
-              Biru Langit
-            </span> 
-            <span class="bg-gradient-to-r from-[#eb7118] to-[#ffe500] bg-clip-text text-transparent">
-              News
-            </span>
-          </h1>
-          <div class="h-1 w-24 sm:w-32 bg-gradient-to-r from-[#eb7118] to-[#ffe500] rounded-full mx-auto mb-6 sm:mb-8"></div>
-          <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-blue-100 max-w-3xl mx-auto leading-relaxed px-4">
-            Portal berita dan informasi terkini dari BEM UNRI Kabinet Biru Langit. 
-            Tetap update dengan kegiatan, program, dan pencapaian terbaru kami.
-          </p>
-        </div>
-      </div>
-    </section>
-
+   <section 
+  class="relative min-h-[60vh] sm:min-h-[70vh] lg:min-50-screen flex items-center justify-center bg-cover bg-center bg-no-repeat"
+  :style="{ backgroundImage: `url('/images/fotounri.jpg')` }"
+>
+  <!-- Overlay dengan gradient blend dari bawah -->
+  <div class="absolute inset-0 bg-gradient-to-t from-white/80 via-white/70 to-white/10"></div>
+  
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6">
+        <span class="bg-gradient-to-r from-[#034caa] to-[#003375] bg-clip-text text-transparent">
+          Biru Langit
+        </span> 
+        <span class="bg-gradient-to-r from-[#eb7118] to-[#ffe500] bg-clip-text text-transparent">
+          News
+        </span>
+      </h1>
+      <div class="h-1 w-24 sm:w-32 bg-gradient-to-r from-[#eb7118] to-[#ffe500] rounded-full mx-auto mb-6 sm:mb-8"></div>
+      <p class="text-base sm:text-lg md:text-xl lg:text-2xl text-black max-w-3xl mx-auto leading-relaxed px-4">
+        Portal berita dan informasi terkini dari BEM UNRI Kabinet Biru Langit. 
+        Tetap update dengan kegiatan, program, dan pencapaian terbaru kami.
+      </p>
+    </div>
+  </div>
+</section>
     <!-- Search and Filter Section -->
     <section class="py-8 sm:py-12 bg-white shadow-lg">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

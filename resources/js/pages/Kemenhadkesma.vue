@@ -1,4 +1,4 @@
-<!-- resources/js/pages/Kemendagri.vue -->
+
 <template>
   <div class="min-h-screen bg-gradient-to-br from-blue-50 to-white">
     <Header />
@@ -6,7 +6,7 @@
     <!-- Kementerian Header Section -->
     <section 
       class="relative min-h-screen lg:min-h-screen md:min-h-[50vh] flex items-center justify-center bg-cover bg-center bg-no-repeat"
-      :style="{ backgroundImage: `url('/images/fotbarkbl.jpeg')` }"
+      :style="{ backgroundImage: `url('/images/fotounri.jpg')` }"
     >
       <!-- Background Overlay with gradient that blends to next section -->
       <div class="absolute inset-0 bg-gradient-to-b from-white/70 via-white/60 to-transparent z-10"></div>
@@ -23,7 +23,7 @@
             :class="isVisible ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'"
             :style="{ transitionDelay: '400ms' }"
           >
-            Kementrian<span class="bg-gradient-to-r from-[#eb7118] to-[#ffe500] bg-clip-text text-transparent"> Dalam Negeri</span>
+            Kementrian<span class="bg-gradient-to-r from-[#eb7118] to-[#ffe500] bg-clip-text text-transparent"> Hukum dan Advokasi Kesejahteraan Mahasiswa </span>
           </h1>
 
           <!-- Description with delayed animation -->
@@ -32,9 +32,7 @@
             :class="isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'"
             :style="{ transitionDelay: '500ms' }"
           >
-            Kementerian Dalam Negeri bertugas mengelola urusan internal organisasi BEM UNRI, 
-            pengembangan sumber daya manusia, koordinasi antar departemen, dan penguatan 
-            kapasitas organisasi untuk mencapai visi misi Kabinet Biru Langit.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio perferendis, debitis obcaecati quidem porro voluptas soluta odio, culpa facere placeat doloremque aliquid, cumque explicabo recusandae ad sed blanditiis ab temporibus consequatur velit delectus impedit! Aperiam aspernatur commodi quidem dolorem nostrum!
           </p>
         </div>
       </div>
@@ -62,7 +60,7 @@
               <div class="card-face absolute w-full h-full bg-cover bg-center bg-no-repeat flex items-center justify-center text-white" 
                    style="backface-visibility: hidden;"
                    :style="{ backgroundImage: `url('${program.image}')` }">
-                <div class="absolute inset-0 bg-gradient-to-br from-orange-500/80 to-yellow-400/80"></div>
+                <div class="absolute inset-0 bg-gradient-to-br from-slate-500/80 to-slate-600/80"></div>
                 <div class="text-center p-6 relative z-10">
                   <h3 class="text-xl font-bold drop-shadow-lg">{{ program.title }}</h3>
                   <p class="text-sm opacity-90 mt-2 drop-shadow-md">{{ program.subtitle }}</p>
@@ -111,9 +109,6 @@
                   <h3 class="text-xl font-semibold text-gray-800 mb-2">{{ member.name }}</h3>
                   <p class="text-gray-500 mb-3">{{ member.position }}</p>
                   <div class="flex justify-center space-x-2">
-                    <a href="#" class="w-8 h-8 bg-gradient-to-r from-[#034caa] to-[#003375] rounded-lg flex items-center justify-center hover:scale-110 transition-transform">
-                      <span class="text-white text-sm font-bold">In</span>
-                    </a>
                   </div>
                 </div>
               </div>
@@ -138,7 +133,7 @@ import 'swiper/css/autoplay'
 import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 
 export default {
-  name: 'KemendagriPage',
+  name: 'KemenhadkesmaPage',
   components: {
     Header,
     Footer
@@ -149,50 +144,76 @@ export default {
       
       programs: [
         {
-          title: 'Pelatihan Kepemimpinan',
-          subtitle: 'Pengembangan soft skill anggota',
-          description: 'Program pelatihan kepemimpinan untuk meningkatkan kapasitas anggota BEM dalam mengelola organisasi dan memimpin tim.',
+          title: 'Kemistri (Kelas Administrasi)',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
           image: '/images/sample5.jpeg'
         },
         {
-          title: 'Koordinasi Antar Divisi',
-          subtitle: 'Sinkronisasi program kerja',
-          description: 'Memfasilitasi koordinasi dan sinkronisasi program kerja antar departemen untuk menciptakan sinergi yang optimal.',
-          image: '/images/sample2.jpeg'
-        },
-        {
-          title: 'Training & Development',
-          subtitle: 'Peningkatan kompetensi',
-          description: 'Program pelatihan berkelanjutan untuk meningkatkan kompetensi teknis dan manajerial anggota organisasi.',
-          image: '/images/sample3.jpeg'
-        },
-        {
-          title: 'Sistem Informasi Internal',
-          subtitle: 'Digitalisasi administrasi',
-          description: 'Pengembangan sistem informasi untuk mempermudah administrasi internal dan monitoring kinerja organisasi.',
-          image: '/images/sample4.jpeg'
-        },
-        {
-          title: 'Evaluasi Kinerja',
-          subtitle: 'Monitoring & assessment',
-          description: 'Sistem evaluasi kinerja berkala untuk mengukur efektivitas program dan kinerja anggota organisasi.',
+          title: 'Ruang Kesekretariatan ',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
           image: '/images/sample5.jpeg'
         },
         {
-          title: 'Team Building',
-          subtitle: 'Penguatan solidaritas',
-          description: 'Kegiatan team building untuk mempererat hubungan dan meningkatkan kerjasama antar anggota departemen.',
-          image: '/images/fotbarkbl.jpeg'
+          title: 'Pendataan dan Penyediaan Inventaris ',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
+          image: '/images/sample5.jpeg'
+        },
+        {
+          title: 'Pengarsipan Biodata Pengurus ',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
+          image: '/images/sample5.jpeg'
+        },
+        {
+          title: 'Gotong Royong ',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
+          image: '/images/sample5.jpeg'
+        },
+        {
+          title: 'Piket Biru Langit',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
+          image: '/images/sample5.jpeg'
+        },
+        {
+          title: 'Pengarsipan Surat Keluar',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
+          image: '/images/sample5.jpeg'
+        },
+        {
+          title: 'Pengarsipan Surat Masuk',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
+          image: '/images/sample5.jpeg'
+        },
+        {
+          title: 'Pembuatan Buku Rapat Kementerian ',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
+          image: '/images/sample5.jpeg'
+        },
+        {
+          title: 'Pembuatan SOP AKP Biru Langit ',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
+          image: '/images/sample5.jpeg'
+        },
+        {
+          title: 'Manajemen Agenda Kabinet',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
+          image: '/images/sample5.jpeg'
+        },
+         {
+          title: 'Pengarsipan Dokumen Administrasi ',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas eros velit, tristique non sapien at, aliquet dapibus massa. Nunc nec commodo dolor, ut vehicula magna.',
+          image: '/images/sample5.jpeg'
         }
       ],
       
       staffMembers: [
-        { name: 'Altamis Rafie', position: 'Staff', image: '/images/sample2.jpeg' },
-        { name: 'Christina Marsha', position: 'Staff', image: '/images/sample5.jpeg' },
-        { name: 'Kalya Salsabila', position: 'Staff', image: '/images/sample2.jpeg' },
-        { name: 'Nama Staff 4', position: 'Staff', image: '/images/sample3.jpeg' },
-        { name: 'Nama Staff 5', position: 'Staff', image: '/images/sample4.jpeg' },
-        { name: 'Nama Staff 6', position: 'Staff', image: '/images/sample5.jpeg' }
+        { name: 'Rafif Deopra Bowen', position: 'Menteri Sekretaris Kabinet', image: '/images/sample2.jpeg' },
+        { name: 'Ega Rahmadani', position: 'Dirjen Administrasi', image: '/images/sample5.jpeg' },
+        { name: 'Intan Zahara', position: 'Staf Dirjen Administrasi', image: '/images/sample2.jpeg' },
+        { name: 'Muhammad Rizal', position: 'Dirjen Kesekretariatan', image: '/images/sample3.jpeg' },
+        { name: 'Latifah, K.Sh', position: 'Staf Dirjen Kesekretariatan', image: '/images/sample4.jpeg' },
+        { name: 'Ayu Mita Jami Yanti', position: 'Staf Dirjen Kesekretariatan', image: '/images/sample4.jpeg' },
+        { name: 'Shah Jehan Rafaldi', position: 'Dirjen Protokoler', image: '/images/sample4.jpeg' },
+        { name: 'M. Alif Setiawan', position: 'Staf Dirjen Protokoler', image: '/images/sample5.jpeg' }
       ],
       
       swiper: null

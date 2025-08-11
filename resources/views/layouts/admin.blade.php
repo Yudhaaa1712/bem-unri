@@ -44,7 +44,14 @@
             <!-- Navigation -->
             <nav class="mt-8">
                 <div class="px-4 space-y-2">
-                  
+                    <a href="{{ route('admin.dashboard') }}" 
+                       class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-colors {{ request()->routeIs('admin.dashboard') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : '' }}">
+                        <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v5H8V5z"></path>
+                        </svg>
+                        Dashboard
+                    </a>
                     
                     <a href="{{ route('admin.news.index') }}" 
                        class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-blue-50 hover:text-blue-700 transition-colors {{ request()->routeIs('admin.news.*') ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700' : '' }}">
@@ -53,8 +60,6 @@
                         </svg>
                         Kelola News
                     </a>
-                    
-                   
                 </div>
                 
                 <!-- User Menu -->
@@ -62,20 +67,34 @@
                     <div class="px-4">
                         <div class="flex items-center mb-4">
                             <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                <span class="text-white font-semibold text-sm">A</span>
+                                <span class="text-white font-semibold text-sm">
+                                    {{ substr(session('admin_user_name', 'A'), 0, 1) }}
+                                </span>
                             </div>
                             <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-700">Admin BEM</p>
-                                <p class="text-xs text-gray-500">Administrator</p>
+                                <p class="text-sm font-medium text-gray-700">{{ session('admin_user_name', 'Admin') }}</p>
+                                <p class="text-xs text-gray-500">{{ session('admin_username', 'admin') }}</p>
                             </div>
                         </div>
                         
-                        <a href="{{ route('home') }}" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 rounded-lg hover:bg-red-50 hover:text-red-700 transition-colors">
-                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                            </svg>
-                            Kembali ke Website
-                        </a>
+                        <div class="space-y-2">
+                            <a href="{{ route('home') }}" class="flex items-center w-full px-4 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                </svg>
+                                Lihat Website
+                            </a>
+                            
+                            <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="w-full">
+                                @csrf
+                                <button type="submit" class="flex items-center w-full px-4 py-2 text-sm text-red-600 rounded-lg hover:bg-red-50 hover:text-red-700 transition-colors">
+                                    <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                    </svg>
+                                    Logout
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </nav>
@@ -118,6 +137,13 @@
                 toast.classList.add('hidden');
             }, 3000);
         };
+
+        // Logout confirmation
+        document.getElementById('logout-form').addEventListener('submit', function(e) {
+            if (!confirm('Yakin ingin logout?')) {
+                e.preventDefault();
+            }
+        });
     </script>
     
     @yield('scripts')

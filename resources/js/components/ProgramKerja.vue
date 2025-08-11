@@ -1,6 +1,6 @@
 <!-- resources/js/components/ProgramKerja.vue -->
 <template>
-  <section class="py-12 bg-gradient-to-br from-blue-50 to-white">
+  <section class="py-12 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-12">
           <h2 class="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#034caa] to-[#003375] bg-clip-text text-transparent mb-4 pb-2 leading-tight ">
@@ -15,7 +15,7 @@
             <!-- Front Side -->
             <div class="card-face absolute w-full h-full bg-cover bg-center bg-no-repeat flex items-center justify-center text-white" 
                  style="backface-visibility: hidden; background-image: url('/images/fotbarkbl.jpeg');">
-              <div class="absolute inset-0 bg-gradient-to-br from-orange-500/80 to-yellow-400/80"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-slate-500/80 to-slate-600/80"></div>
               <div class="text-center p-6 relative z-10">
                 <h3 class="text-xl font-bold drop-shadow-lg">Lorem, ipsum.</h3>
                 <p class="text-sm opacity-90 mt-2 drop-shadow-md">Lorem, ipsum dolor.</p>
@@ -40,7 +40,7 @@
             <!-- Front Side -->
             <div class="card-face absolute w-full h-full bg-cover bg-center bg-no-repeat flex items-center justify-center text-white" 
                  style="backface-visibility: hidden; background-image: url('/images/fotbarkbl.jpeg');">
-              <div class="absolute inset-0 bg-gradient-to-br from-orange-500/80 to-yellow-400/80"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-slate-500/80 to-slate-600/80"></div>
               <div class="text-center p-6 relative z-10">
                 <h3 class="text-xl font-bold drop-shadow-lg">Lorem, ipsum.</h3>
                 <p class="text-sm opacity-90 mt-2 drop-shadow-md">Lorem, ipsum dolor.</p>
@@ -65,7 +65,7 @@
             <!-- Front Side -->
             <div class="card-face absolute w-full h-full bg-cover bg-center bg-no-repeat flex items-center justify-center text-white" 
                  style="backface-visibility: hidden; background-image: url('/images/fotbarkbl.jpeg');">
-              <div class="absolute inset-0 bg-gradient-to-br from-orange-500/80 to-yellow-400/80"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-slate-500/80 to-slate-600/80"></div>
               <div class="text-center p-6 relative z-10">
                 <h3 class="text-xl font-bold drop-shadow-lg">Lorem, ipsum.</h3>
                 <p class="text-sm opacity-90 mt-2 drop-shadow-md">Lorem, ipsum dolor.</p>
@@ -90,7 +90,7 @@
             <!-- Front Side -->
             <div class="card-face absolute w-full h-full bg-cover bg-center bg-no-repeat flex items-center justify-center text-white" 
                  style="backface-visibility: hidden; background-image: url('/images/fotbarkbl.jpeg');">
-              <div class="absolute inset-0 bg-gradient-to-br from-orange-500/80 to-yellow-400/80"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-slate-500/80 to-slate-600/80"></div>
               <div class="text-center p-6 relative z-10">
                 <h3 class="text-xl font-bold drop-shadow-lg">Lorem, ipsum.</h3>
                 <p class="text-sm opacity-90 mt-2 drop-shadow-md">Lorem, ipsum dolor.</p>
@@ -114,7 +114,7 @@
             <!-- Front Side -->
             <div class="card-face absolute w-full h-full bg-cover bg-center bg-no-repeat flex items-center justify-center text-white" 
                  style="backface-visibility: hidden; background-image: url('/images/fotbarkbl.jpeg');">
-              <div class="absolute inset-0 bg-gradient-to-br from-orange-500/80 to-yellow-400/80"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-slate-500/80 to-slate-600/80"></div>
               <div class="text-center p-6 relative z-10">
                 <h3 class="text-xl font-bold drop-shadow-lg">Lorem, ipsum.</h3>
                 <p class="text-sm opacity-90 mt-2 drop-shadow-md">Lorem, ipsum dolor.</p>
@@ -138,7 +138,7 @@
             <!-- Front Side -->
             <div class="card-face absolute w-full h-full bg-cover bg-center bg-no-repeat flex items-center justify-center text-white" 
                  style="backface-visibility: hidden; background-image: url('/images/fotbarkbl.jpeg');">
-              <div class="absolute inset-0 bg-gradient-to-br from-orange-500/80 to-yellow-400/80"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-slate-500/80 to-slate-600/80"></div>
               <div class="text-center p-6 relative z-10">
                 <h3 class="text-xl font-bold drop-shadow-lg">Lorem, ipsum.</h3>
                 <p class="text-sm opacity-90 mt-2 drop-shadow-md">Lorem, ipsum dolor.</p>

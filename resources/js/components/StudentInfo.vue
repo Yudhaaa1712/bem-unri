@@ -1,6 +1,6 @@
 <!-- resources/js/components/StudentInfo.vue (Updated) -->
 <template>
-  <section class="py-20 bg-gradient-to-br from-biru-langit-50 to-white">
+  <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16">
         <h2 class="text-4xl lg:text-5xl font-bold text-biru-langit-700 mb-4">
