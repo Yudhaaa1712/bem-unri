@@ -10,6 +10,8 @@ class AdminUser extends Model
 {
     use HasFactory;
 
+    protected $table = 'admin_users'; // Pastikan nama table benar
+
     protected $fillable = [
         'name',
         'username', 
@@ -20,29 +22,43 @@ class AdminUser extends Model
     ];
 
     protected $hidden = [
-        'password'
+        'password',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'last_login' => 'datetime'
+        'last_login' => 'datetime',
     ];
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = Hash::make($value);
-    }
-
+    /**
+     * Check if the provided password matches the user's password
+     */
     public function checkPassword($password)
     {
-        return Hash::check($password, $this->password);
+        // Jika password di database sudah di-hash
+        if (Hash::check($password, $this->password)) {
+            return true;
+        }
+        
+        // Jika password masih plain text (untuk development)
+        if ($password === $this->password) {
+            return true;
+        }
+        
+        return false;
     }
 
-    public function updateLastLogin()
+    /**
+     * Set password attribute (auto hash)
+     */
+    public function setPasswordAttribute($password)
     {
-        $this->update(['last_login' => now()]);
+        $this->attributes['password'] = Hash::make($password);
     }
 
+    /**
+     * Scope untuk admin aktif
+     */
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

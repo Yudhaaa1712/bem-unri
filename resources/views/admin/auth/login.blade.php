@@ -15,7 +15,6 @@
     <style>
         [v-cloak] { display: none !important; }
         
-        /* Custom responsive utilities */
         @media (max-height: 640px) {
             .min-h-screen {
                 min-height: 100vh;
@@ -23,12 +22,10 @@
             }
         }
         
-        /* Smooth transitions for better UX */
         .transition-all {
             transition: all 0.3s ease;
         }
         
-        /* Better focus states */
         .focus-visible\:ring-2:focus-visible {
             outline: 2px solid transparent;
             outline-offset: 2px;
@@ -37,7 +34,6 @@
 </head>
 <body class="bg-gradient-to-br from-blue-500 via-blue-600 to-blue-700 min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
     <div id="login-app" v-cloak class="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl">
-        <!-- Login Card -->
         <div class="bg-white rounded-xl shadow-2xl p-6 sm:p-8 lg:p-10 transition-all hover:shadow-3xl">
             <!-- Logo/Header -->
             <div class="text-center mb-6 sm:mb-8">
@@ -45,16 +41,23 @@
                 <p class="text-sm sm:text-base text-gray-600">Silakan login untuk melanjutkan</p>
             </div>
 
-            <!-- Alert -->
+            <!-- Vue Alert -->
             <div v-if="alert.show" 
                  :class="alert.type === 'error' ? 'bg-red-50 border-red-200 text-red-700' : 'bg-green-50 border-green-200 text-green-700'" 
                  class="border rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 transition-all">
                 <p class="text-xs sm:text-sm">@{{ alert.message }}</p>
             </div>
 
+            <!-- Laravel Session Alerts -->
             @if(session('success'))
                 <div class="bg-green-50 border border-green-200 text-green-700 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
                     <p class="text-xs sm:text-sm">{{ session('success') }}</p>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="bg-red-50 border border-red-200 text-red-700 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+                    <p class="text-xs sm:text-sm">{{ session('error') }}</p>
                 </div>
             @endif
 
@@ -112,17 +115,26 @@
                 </p>
             </div>
         </div>
-        
-        <!-- Additional responsive info for very small screens -->
-        <div class="mt-4 text-center sm:hidden">
-            <p class="text-xs text-white/80">
-                Untuk pengalaman terbaik, gunakan perangkat dengan layar yang lebih besar
-            </p>
-        </div>
     </div>
 
     <script>
         const { createApp } = Vue;
+
+        // Environment check untuk debugging
+        const isDevelopment = window.location.hostname === 'localhost' || 
+                            window.location.hostname === '127.0.0.1' ||
+                            window.location.hostname.includes('.local');
+
+        // Secure logging function
+        function secureLog(message, data = null) {
+            if (isDevelopment) {
+                if (data) {
+                    console.log(message, data);
+                } else {
+                    console.log(message);
+                }
+            }
+        }
 
         createApp({
             data() {
@@ -153,7 +165,7 @@
                 },
 
                 async login() {
-                    // Validate form before submission
+                    // Validate form
                     if (!this.form.username.trim() || !this.form.password.trim()) {
                         this.showAlert('Username dan password harus diisi');
                         return;
@@ -169,7 +181,8 @@
                             throw new Error('CSRF token tidak ditemukan');
                         }
 
-                        console.log('Attempting login for:', this.form.username);
+                        // SECURE: Hanya log username (bukan password) di development
+                        secureLog('Attempting login for:', this.form.username);
 
                         const response = await fetch('/admin/login', {
                             method: 'POST',
@@ -182,32 +195,41 @@
                             body: JSON.stringify(this.form)
                         });
 
-                        console.log('Response status:', response.status);
+                        // SECURE: Jangan log response status di production
+                        secureLog('Response status:', response.status);
 
-                        // Handle non-JSON responses
                         const contentType = response.headers.get('content-type');
                         if (!contentType?.includes('application/json')) {
                             const textResponse = await response.text();
-                            console.error('Non-JSON response:', textResponse);
-                            throw new Error('Server mengembalikan response yang tidak valid (bukan JSON)');
+                            secureLog('Non-JSON response received');
+                            throw new Error('Server mengembalikan response yang tidak valid');
                         }
 
                         const data = await response.json();
-                        console.log('Response data:', data);
+                        
+                        // SECURE: Jangan log response data yang sensitif
+                        secureLog('Login response received');
 
                         if (data.success) {
                             this.showAlert(data.message, 'success');
-                            console.log('Login berhasil, redirect ke:', data.redirect);
+                            secureLog('Login successful, redirecting...');
+                            
+                            // Clear form sebelum redirect untuk keamanan
+                            this.form.username = '';
+                            this.form.password = '';
                             
                             setTimeout(() => {
                                 window.location.href = data.redirect;
                             }, 1000);
                         } else {
                             this.showAlert(data.message || 'Login gagal');
+                            // Clear password saat gagal login
+                            this.form.password = '';
                         }
 
                     } catch (error) {
-                        console.error('Login error:', error);
+                        secureLog('Login error occurred');
+                        
                         let errorMessage = 'Terjadi kesalahan saat login';
                         
                         if (error.name === 'TypeError' && error.message.includes('fetch')) {
@@ -217,12 +239,15 @@
                         }
                         
                         this.showAlert(errorMessage);
+                        
+                        // Clear password saat error
+                        this.form.password = '';
+                        
                     } finally {
                         this.loading = false;
                     }
                 },
 
-                // Handle keyboard navigation
                 handleKeyPress(event) {
                     if (event.key === 'Enter' && !this.loading) {
                         this.login();
@@ -231,7 +256,7 @@
             },
 
             mounted() {
-                // Focus to username input when page loads
+                // Focus ke username input
                 this.$nextTick(() => {
                     const usernameInput = document.getElementById('username');
                     if (usernameInput) {
@@ -239,16 +264,27 @@
                     }
                 });
                 
-                // Debug: check CSRF token
+                // SECURE: Jangan log CSRF token di production
                 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
-                console.log('CSRF Token available:', !!csrfToken);
+                secureLog('CSRF Token available:', !!csrfToken);
 
-                // Add keyboard event listener
                 document.addEventListener('keydown', this.handleKeyPress);
+                
+                // Security: Disable right-click dan F12 di production
+                if (!isDevelopment) {
+                    document.addEventListener('contextmenu', (e) => e.preventDefault());
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'F12' || 
+                            (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                            (e.ctrlKey && e.shiftKey && e.key === 'C') ||
+                            (e.ctrlKey && e.key === 'u')) {
+                            e.preventDefault();
+                        }
+                    });
+                }
             },
 
             beforeUnmount() {
-                // Clean up event listener
                 document.removeEventListener('keydown', this.handleKeyPress);
             }
         }).mount('#login-app');

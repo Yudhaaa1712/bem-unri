@@ -147,7 +147,7 @@
                     <svg class="w-4 h-4 mr-2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>
-                    {{ formatEventDate(event.event_date) }}
+                    {{ event.event_date }}
                   </p>
                   <p v-if="event.description" class="text-sm text-gray-600 mt-2">{{ event.description }}</p>
                 </div>
@@ -356,7 +356,7 @@ const fileInput = ref(null)
 // Alert state
 const alert = ref({
   show: false,
-  type: 'success', // success or error
+  type: 'success',
   message: ''
 })
 
@@ -374,7 +374,20 @@ const photoForm = ref({
   is_active: true
 })
 
-// Methods
+// SIMPLE DATE FUNCTIONS - FIXED
+const getDateForInput = (dateString) => {
+  if (!dateString) return ''
+  
+  // Jika ada 'T', ambil bagian sebelum T saja
+  if (dateString.includes('T')) {
+    return dateString.split('T')[0]
+  }
+  
+  // Jika sudah format YYYY-MM-DD, return as is
+  return dateString
+}
+
+// Common Methods
 const showAlert = (type, message) => {
   alert.value = {
     show: true,
@@ -382,13 +395,11 @@ const showAlert = (type, message) => {
     message
   }
   
-  // Auto hide after 5 seconds
   setTimeout(() => {
     alert.value.show = false
   }, 5000)
 }
 
-// Get CSRF token
 const getCSRFToken = () => {
   return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
 }
@@ -427,11 +438,26 @@ const saveEvent = async () => {
   isSaving.value = true
   
   try {
+    // Debug: console log data yang akan dikirim
+    console.log('=== SAVE EVENT DEBUG ===')
+    console.log('Data yang akan dikirim:', eventForm.value)
+    
     const url = editingEvent.value 
       ? `/api/admin/events/${editingEvent.value.id}` 
       : '/api/admin/events'
     
     const method = editingEvent.value ? 'PUT' : 'POST'
+    
+    // Pastikan format tanggal benar sebelum dikirim
+    const dataToSend = {
+      ...eventForm.value,
+      // Pastikan tanggal dalam format YYYY-MM-DD
+      event_date: eventForm.value.event_date,
+      // Convert boolean untuk is_active
+      is_active: eventForm.value.is_active ? 1 : 0
+    }
+    
+    console.log('Data setelah formatting:', dataToSend)
     
     const response = await fetch(url, {
       method,
@@ -440,17 +466,19 @@ const saveEvent = async () => {
         'X-Requested-With': 'XMLHttpRequest',
         'X-CSRF-TOKEN': getCSRFToken()
       },
-      body: JSON.stringify(eventForm.value)
+      body: JSON.stringify(dataToSend)
     })
     
+    console.log('Response status:', response.status)
+    
     const data = await response.json()
+    console.log('Response data:', data)
     
     if (response.ok && data.success) {
       showAlert('success', data.message || 'Event berhasil disimpan')
       resetEventForm()
-      fetchEvents() // Reload data
+      fetchEvents()
     } else {
-      // Show detailed validation errors
       if (data.errors) {
         const errorMessages = Object.values(data.errors).flat().join(', ')
         showAlert('error', 'Validation error: ' + errorMessages)
@@ -467,15 +495,22 @@ const saveEvent = async () => {
 }
 
 const editEvent = (event) => {
+  console.log('=== DEBUG EDIT EVENT ===')
+  console.log('Original event.event_date:', event.event_date)
+  
+  const dateForInput = getDateForInput(event.event_date)
+  console.log('Date for input field:', dateForInput)
+  
   editingEvent.value = event
   eventForm.value = {
     title: event.title,
     description: event.description || '',
-    event_date: event.event_date,
+    event_date: dateForInput,
     is_active: event.is_active
   }
   
-  // Scroll ke form
+  console.log('Final eventForm.event_date:', eventForm.value.event_date)
+  
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
@@ -503,7 +538,7 @@ const deleteEvent = async (event) => {
     
     if (response.ok && data.success) {
       showAlert('success', 'Event berhasil dihapus')
-      fetchEvents() // Reload data
+      fetchEvents()
     } else {
       showAlert('error', data.message || 'Gagal menghapus event')
     }
@@ -552,13 +587,11 @@ const fetchPhotos = async () => {
   }
 }
 
-// File handling
 const handleFileSelect = (event) => {
   const file = event.target.files[0]
   if (file) {
     selectedFile.value = file
     
-    // Create preview
     const reader = new FileReader()
     reader.onload = (e) => {
       previewImage.value = e.target.result
@@ -571,7 +604,6 @@ const savePhoto = async () => {
   isSavingPhoto.value = true
   
   try {
-    // Create FormData for file upload
     const formData = new FormData()
     formData.append('title', photoForm.value.title)
     formData.append('description', photoForm.value.description || '')
@@ -588,7 +620,7 @@ const savePhoto = async () => {
       ? `/api/admin/photos/${editingPhoto.value.id}` 
       : '/api/admin/photos'
     
-    const method = editingPhoto.value ? 'POST' : 'POST' // Laravel handles PUT via _method in FormData
+    const method = editingPhoto.value ? 'POST' : 'POST'
     
     if (editingPhoto.value) {
       formData.append('_method', 'PUT')
@@ -608,9 +640,8 @@ const savePhoto = async () => {
     if (response.ok && data.success) {
       showAlert('success', data.message || 'Foto berhasil disimpan')
       resetPhotoForm()
-      fetchPhotos() // Reload data
+      fetchPhotos()
     } else {
-      // Show detailed validation errors
       if (data.errors) {
         const errorMessages = Object.values(data.errors).flat().join(', ')
         showAlert('error', 'Validation error: ' + errorMessages)
@@ -634,11 +665,9 @@ const editPhoto = (photo) => {
     is_active: photo.is_active
   }
   
-  // Set preview to existing image
   previewImage.value = photo.image_url
   selectedFile.value = null
   
-  // Switch to photos tab and scroll to form
   activeTab.value = 'photos'
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
@@ -667,7 +696,7 @@ const deletePhoto = async (photo) => {
     
     if (response.ok && data.success) {
       showAlert('success', 'Foto berhasil dihapus')
-      fetchPhotos() // Reload data
+      fetchPhotos()
     } else {
       showAlert('error', data.message || 'Gagal menghapus foto')
     }
@@ -683,23 +712,12 @@ const resetPhotoForm = () => {
     description: '',
     is_active: true
   }
-  selectedFile.value = null
+  selectedFile.value = null 
   previewImage.value = ''
   
-  // Reset file input
   if (fileInput.value) {
     fileInput.value.value = ''
   }
-}
-
-// Utility Methods
-const formatEventDate = (dateString) => {
-  return new Date(dateString).toLocaleDateString('id-ID', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
 }
 
 // Initialize

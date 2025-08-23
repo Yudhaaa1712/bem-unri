@@ -15,7 +15,7 @@
         
         <title>Biru Langit News - BEM UNRI 2025</title>
         <link rel="canonical" href="{{ url('/news') }}">
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+        <link rel="icon" type="image/png" href="{{ asset('images/logobem.png') }}">
         
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>

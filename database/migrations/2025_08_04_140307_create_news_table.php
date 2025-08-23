@@ -13,14 +13,18 @@ return new class extends Migration
             $table->string('title');
             $table->text('excerpt');
             $table->longText('content');
-            $table->enum('category', ['kemendagri', 'kemlu', 'sosmas']);
+            $table->string('category');
             $table->string('author');
             $table->string('image')->nullable();
-            $table->integer('views')->default(0);
+            $table->unsignedInteger('views')->default(0);
             $table->json('tags')->nullable();
             $table->boolean('is_published')->default(false);
             $table->timestamp('published_at')->nullable();
             $table->timestamps();
+            
+            // Index untuk performa
+            $table->index(['is_published', 'published_at']);
+            $table->index('category');
         });
     }
 

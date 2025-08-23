@@ -14,8 +14,8 @@ class EventController extends Controller
     {
         try {
             $events = Event::active()
-                          ->orderBy('event_date', 'asc')
-                          ->get();
+                ->orderBy('event_date', 'asc')
+                ->get();
 
             return response()->json([
                 'success' => true,
@@ -60,10 +60,7 @@ class EventController extends Controller
                 'is_active' => 'boolean'
             ]);
 
-            // Set default values untuk field yang tidak ada
-            $validated['time'] = '00:00 - 23:59'; // Default waktu
-            $validated['location'] = null; // Default lokasi kosong
-
+            // HAPUS bagian time dan location - tidak diperlukan
             $event = Event::create($validated);
 
             return response()->json([
@@ -123,10 +120,7 @@ class EventController extends Controller
                 'is_active' => 'boolean'
             ]);
 
-            // Set default values untuk field yang tidak ada
-            $validated['time'] = '00:00 - 23:59'; // Default waktu
-            $validated['location'] = null; // Default lokasi kosong
-
+            // HAPUS bagian time dan location - tidak diperlukan
             $event->update($validated);
 
             return response()->json([

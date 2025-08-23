@@ -74,8 +74,6 @@ Route::get('/kemensospol', function () {
     return view('kemensospol');
 })->name('kemensospol');
 
-
-
 // Menu/navigasi pages
 Route::get('/news', function () {
     return view('news');
@@ -105,83 +103,106 @@ Route::prefix('api')->group(function () {
     
     // Events API (Public - untuk frontend Timeline)
     Route::prefix('events')->group(function () {
-        Route::get('/', [EventController::class, 'index'])->name('api.events'); // GET /api/events
-        Route::get('/{id}', [EventController::class, 'show'])->name('api.events.show'); // GET /api/events/1
+        Route::get('/', [EventController::class, 'index'])->name('api.events');
+        Route::get('/{id}', [EventController::class, 'show'])->name('api.events.show');
     });
     
     // Photos API (Public - untuk frontend Gallery)
     Route::prefix('photos')->group(function () {
-        Route::get('/', [PhotoController::class, 'index'])->name('api.photos'); // GET /api/photos
+        Route::get('/', [PhotoController::class, 'index'])->name('api.photos');
     });
 });
 
 /*
 |--------------------------------------------------------------------------
-| Admin Authentication Routes (NO MIDDLEWARE)
+| Admin Authentication Routes (GUEST ONLY)
 |--------------------------------------------------------------------------
 */
 
-// Login routes (tidak butuh middleware)
-Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [AdminAuthController::class, 'login'])->name('admin.login.post');
-Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+Route::prefix('admin')->name('admin.')->group(function () {
+    // Routes untuk guest (belum login) dengan middleware guest untuk admin
+    Route::middleware('admin.guest')->group(function () {
+        Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
+        Route::post('/login', [AdminAuthController::class, 'login'])->name('login.post');
+    });
+    
+    // Logout route (butuh auth)
+    Route::post('/logout', [AdminAuthController::class, 'logout'])
+        ->middleware('admin.auth')
+        ->name('logout');
+});
 
 /*
 |--------------------------------------------------------------------------
-| Admin Protected Routes (sementara tanpa middleware untuk testing)
+| Admin Protected Routes (DENGAN MIDDLEWARE)
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('admin')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('admin.auth')->group(function () {
     // Dashboard
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
-    })->name('admin.dashboard');
+    })->name('dashboard');
     
     // News management
     Route::get('/news', function () {
         return view('admin.news.index');
-    })->name('admin.news.index');
+    })->name('news.index');
     
-    // Events management (halaman admin untuk kelola events)
+    // Events management
     Route::get('/events', function () {
         return view('admin.events.index');
-    })->name('admin.events.index');
+    })->name('events.index');
+    
+    // Photos management
+    Route::get('/photos', function () {
+        return view('admin.photos.index');
+    })->name('photos.index');
+    
+    // Settings
+    Route::get('/settings', function () {
+        return view('admin.settings');
+    })->name('settings');
 });
 
 /*
 |--------------------------------------------------------------------------
-| Admin API Routes (sementara tanpa middleware untuk testing)
+| Admin API Routes (DENGAN MIDDLEWARE)
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('api/admin')->group(function () {
+Route::prefix('api/admin')->name('admin.api.')->middleware('admin.auth')->group(function () {
     // News API
-    Route::middleware('admin.auth')->group(function () {
-        Route::get('/news/stats', [AdminNewsController::class, 'stats'])->name('admin.api.news.stats');
-        Route::get('/news', [AdminNewsController::class, 'index'])->name('admin.api.news.index');
-        Route::post('/news', [AdminNewsController::class, 'store'])->name('admin.api.news.store');
-        Route::get('/news/{news}', [AdminNewsController::class, 'show'])->name('admin.api.news.show');
-        Route::put('/news/{news}', [AdminNewsController::class, 'update'])->name('admin.api.news.update');
-        Route::delete('/news/{news}', [AdminNewsController::class, 'destroy'])->name('admin.api.news.destroy');
-        Route::post('/news/{news}/toggle-publish', [AdminNewsController::class, 'togglePublish'])->name('admin.api.news.toggle');
-        Route::post('/news/bulk-delete', [AdminNewsController::class, 'bulkDelete'])->name('admin.api.news.bulk-delete');
+    Route::prefix('news')->name('news.')->group(function () {
+        Route::get('/stats', [AdminNewsController::class, 'stats'])->name('stats');
+        Route::get('/', [AdminNewsController::class, 'index'])->name('index');
+        Route::post('/', [AdminNewsController::class, 'store'])->name('store');
+        Route::get('/{news}', [AdminNewsController::class, 'show'])->name('show');
+        Route::put('/{news}', [AdminNewsController::class, 'update'])->name('update');
+        Route::delete('/{news}', [AdminNewsController::class, 'destroy'])->name('destroy');
+        Route::post('/{news}/toggle-publish', [AdminNewsController::class, 'togglePublish'])->name('toggle');
+        Route::post('/bulk-delete', [AdminNewsController::class, 'bulkDelete'])->name('bulk-delete');
     });
     
-    // Events API (sementara tanpa middleware untuk testing)
-    Route::prefix('events')->group(function () {
-        Route::get('/', [EventController::class, 'adminIndex'])->name('admin.api.events.index'); // GET /api/admin/events
-        Route::post('/', [EventController::class, 'store'])->name('admin.api.events.store'); // POST /api/admin/events
-        Route::get('/{id}', [EventController::class, 'show'])->name('admin.api.events.show'); // GET /api/admin/events/1
-        Route::put('/{id}', [EventController::class, 'update'])->name('admin.api.events.update'); // PUT /api/admin/events/1
-        Route::delete('/{id}', [EventController::class, 'destroy'])->name('admin.api.events.destroy'); // DELETE /api/admin/events/1
+    // Events API
+    Route::prefix('events')->name('events.')->group(function () {
+        Route::get('/', [EventController::class, 'adminIndex'])->name('index');
+        Route::post('/', [EventController::class, 'store'])->name('store');
+        Route::get('/{id}', [EventController::class, 'show'])->name('show');
+        Route::put('/{id}', [EventController::class, 'update'])->name('update');
+        Route::delete('/{id}', [EventController::class, 'destroy'])->name('destroy');
     });
     
-    // Photos API (Admin - untuk CRUD photos)
-    Route::prefix('photos')->group(function () {
-        Route::get('/', [PhotoController::class, 'adminIndex'])->name('admin.api.photos.index'); // GET /api/admin/photos
-        Route::post('/', [PhotoController::class, 'store'])->name('admin.api.photos.store'); // POST /api/admin/photos
-        Route::put('/{id}', [PhotoController::class, 'update'])->name('admin.api.photos.update'); // PUT /api/admin/photos/1
-        Route::delete('/{id}', [PhotoController::class, 'destroy'])->name('admin.api.photos.destroy'); // DELETE /api/admin/photos/1
+    // Photos API
+    Route::prefix('photos')->name('photos.')->group(function () {
+        Route::get('/', [PhotoController::class, 'adminIndex'])->name('index');
+        Route::post('/', [PhotoController::class, 'store'])->name('store');
+        Route::put('/{id}', [PhotoController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PhotoController::class, 'destroy'])->name('destroy');
     });
 });
+
+// Redirect admin root ke dashboard (dengan auth check)
+Route::get('/admin', function () {
+    return redirect()->route('admin.dashboard');
+})->middleware('admin.auth');

@@ -112,9 +112,20 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Kategori *</label>
                         <select v-model="form.category" required class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-                            <option value="kemendagri">Kemendagri</option>
-                            <option value="kemlu">Kemlu</option>
-                            <option value="sosmas">Sosmas</option>
+                            <option value="" disabled>-- Pilih Kementerian --</option>
+                            <option value="kemensekab">Kemensekab</option>
+                            <option value="kemenagrarialh">Kemenagraria-LH</option>
+                            <option value="kemenrisma">Kemenrisma</option>
+                            <option value="kemensospol">Kemensospol</option>
+                            <option value="kemenhadkesma">Kemenhadkesma</option>
+                            <option value="kemendaniv">Kemendaniv</option>
+                            <option value="kemenPP">KemenPP</option>
+                            <option value="kemenkesra">Kemenkesra</option>
+                            <option value="kemenekraf">Kemenekraf</option>
+                            <option value="kemenkominfo">Kemenkominfo</option>
+                            <option value="kemenluniv">Kemenluniv</option>
+                            <option value="kemensosmas">Kemensosmas</option>
+                            <option value="kemenkeu">Kemenkeu</option>
                         </select>
                     </div>
                     
@@ -188,7 +199,7 @@ createApp({
                 title: '',
                 excerpt: '',
                 content: '',
-                category: 'kemendagri',
+                category: 'kemensekab', // FIXED: typo diperbaiki dari 'kemesekab'
                 author: 'Admin BEM',
                 tags: '',
                 is_published: false
@@ -219,11 +230,22 @@ createApp({
             }
         },
         
+        // FIXED: Updated dengan semua kategori yang benar
         getCategoryName(category) {
             const categories = {
-                kemendagri: 'Kemendagri',
-                kemlu: 'Kemlu', 
-                sosmas: 'Sosmas'
+                kemensekab: 'Kemensekab',
+                kemenagrarialh: 'Kemenagraria-LH',
+                kemenrisma: 'Kemenrisma',
+                kemensospol: 'Kemensospol',
+                kemenhadkesma: 'Kemenhadkesma',
+                kemendaniv: 'Kemendaniv',
+                kemenPP: 'KemenPP',
+                kemenkesra: 'Kemenkesra',
+                kemenekraf: 'Kemenekraf',
+                kemenkominfo: 'Kemenkominfo',
+                kemenluniv: 'Kemenluniv',
+                kemensosmas: 'Kemensosmas',
+                kemenkeu: 'Kemenkeu'
             };
             return categories[category] || 'Umum';
         },
@@ -265,10 +287,17 @@ createApp({
                 if (response.ok) {
                     await this.loadNews();
                     await this.loadStats();
-                    window.showToast('Status berhasil diubah');
+                    if (window.showToast) {
+                        window.showToast('Status berhasil diubah');
+                    }
+                } else {
+                    const errorData = await response.json();
+                    console.error('Toggle publish error:', errorData);
+                    alert('Gagal mengubah status: ' + (errorData.message || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error toggling publish:', error);
+                alert('Gagal mengubah status berita');
             }
         },
         
@@ -286,59 +315,115 @@ createApp({
                 if (response.ok) {
                     await this.loadNews();
                     await this.loadStats();
-                    window.showToast('Berita berhasil dihapus');
+                    if (window.showToast) {
+                        window.showToast('Berita berhasil dihapus');
+                    }
+                } else {
+                    const errorData = await response.json();
+                    console.error('Delete error:', errorData);
+                    alert('Gagal menghapus berita: ' + (errorData.message || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error deleting news:', error);
+                alert('Gagal menghapus berita');
             }
         },
         
+        // FIXED: Menggunakan FormData konsisten untuk semua request
         async saveNews() {
             this.saving = true;
+            
             try {
+                // Validasi client-side
+                if (!this.form.title.trim()) {
+                    alert('Judul harus diisi!');
+                    return;
+                }
+                if (!this.form.excerpt.trim()) {
+                    alert('Ringkasan harus diisi!');
+                    return;
+                }
+                if (!this.form.content.trim()) {
+                    alert('Konten harus diisi!');
+                    return;
+                }
+                if (!this.form.category) {
+                    alert('Kategori harus dipilih!');
+                    return;
+                }
+                if (!this.form.author.trim()) {
+                    alert('Author harus diisi!');
+                    return;
+                }
+
+                // Gunakan FormData untuk semua request (konsisten)
+                const formData = new FormData();
+                
+                // Add all form fields
+                Object.keys(this.form).forEach(key => {
+                    if (this.form[key] !== null && this.form[key] !== '') {
+                        formData.append(key, this.form[key]);
+                    }
+                });
+                
+                // Add image if exists
                 if (this.selectedFile) {
-                    const formData = new FormData();
-                    Object.keys(this.form).forEach(key => {
-                        if (this.form[key] !== null && this.form[key] !== '') {
-                            formData.append(key, this.form[key]);
-                        }
-                    });
                     formData.append('image', this.selectedFile);
+                }
+                
+                // Debug: Log form data yang akan dikirim
+                console.log('=== FORM DATA BEING SENT ===');
+                for (let [key, value] of formData.entries()) {
+                    console.log(`${key}:`, value);
+                }
+                console.log('=== END FORM DATA ===');
+                
+                const response = await fetch('/api/admin/news', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        // IMPORTANT: Jangan set Content-Type untuk FormData - biarkan browser yang set
+                    },
+                    body: formData
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', [...response.headers.entries()]);
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log('Success response:', result);
                     
-                    const response = await fetch('/api/admin/news', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: formData
-                    });
+                    this.closeModal();
+                    await this.loadNews();
+                    await this.loadStats();
                     
-                    if (response.ok) {
-                        this.closeModal();
-                        await this.loadNews();
-                        await this.loadStats();
-                        window.showToast('Berita dengan gambar berhasil disimpan');
+                    if (window.showToast) {
+                        window.showToast('Berita berhasil disimpan');
+                    } else {
+                        alert('Berita berhasil disimpan!');
                     }
                 } else {
-                    const response = await fetch('/api/admin/news', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify(this.form)
-                    });
+                    // Handle error response
+                    const errorData = await response.json();
+                    console.error('Server error response:', errorData);
                     
-                    if (response.ok) {
-                        this.closeModal();
-                        await this.loadNews();
-                        await this.loadStats();
-                        window.showToast('Berita berhasil disimpan');
+                    let errorMessage = 'Gagal menyimpan berita';
+                    if (errorData.errors) {
+                        // Laravel validation errors
+                        const firstError = Object.values(errorData.errors)[0];
+                        if (Array.isArray(firstError)) {
+                            errorMessage += ': ' + firstError[0];
+                        }
+                    } else if (errorData.message) {
+                        errorMessage += ': ' + errorData.message;
                     }
+                    
+                    alert(errorMessage);
                 }
             } catch (error) {
-                console.error('Error saving news:', error);
-                alert('Gagal menyimpan berita');
+                console.error('Network/JS Error:', error);
+                alert('Gagal menyimpan berita: ' + error.message);
             } finally {
                 this.saving = false;
             }
@@ -350,7 +435,7 @@ createApp({
                 title: '',
                 excerpt: '',
                 content: '',
-                category: 'kemendagri',
+                category: 'kemensekab', // FIXED: typo diperbaiki
                 author: 'Admin BEM',
                 tags: '',
                 is_published: false
@@ -360,6 +445,14 @@ createApp({
     },
     
     mounted() {
+        // Check if CSRF token exists
+        const csrfToken = document.querySelector('meta[name="csrf-token"]');
+        if (!csrfToken) {
+            console.error('CSRF token not found! Make sure to add <meta name="csrf-token" content="{{ csrf_token() }}"> in your layout head.');
+        } else {
+            console.log('CSRF token found:', csrfToken.content.substring(0, 10) + '...');
+        }
+        
         this.loadNews();
         this.loadStats();
     }

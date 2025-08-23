@@ -12,7 +12,7 @@ class News extends Model
 
     protected $fillable = [
         'title',
-        'excerpt',
+        'excerpt', 
         'content',
         'category',
         'author',
@@ -26,10 +26,16 @@ class News extends Model
     protected $casts = [
         'tags' => 'array',
         'is_published' => 'boolean',
-        'published_at' => 'datetime'
+        'published_at' => 'datetime',
+        'views' => 'integer'
     ];
 
     protected $appends = ['formatted_date'];
+
+    protected $attributes = [
+        'views' => 0,
+        'is_published' => false
+    ];
 
     public function incrementViews()
     {
@@ -44,7 +50,7 @@ class News extends Model
     protected function formattedDate(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->created_at->format('Y-m-d')
+            get: fn () => $this->created_at ? $this->created_at->format('Y-m-d') : null
         );
     }
 
@@ -66,5 +72,20 @@ class News extends Model
               ->orWhere('excerpt', 'like', "%{$search}%")
               ->orWhere('author', 'like', "%{$search}%");
         });
+    }
+
+    // Simplified mutators - removed complex logic that might cause issues
+    public function setTagsAttribute($value)
+    {
+        if (is_null($value) || $value === '') {
+            $this->attributes['tags'] = json_encode([]);
+        } elseif (is_string($value)) {
+            $tags = array_filter(array_map('trim', explode(',', $value)));
+            $this->attributes['tags'] = json_encode(array_values($tags));
+        } elseif (is_array($value)) {
+            $this->attributes['tags'] = json_encode($value);
+        } else {
+            $this->attributes['tags'] = json_encode([]);
+        }
     }
 }
