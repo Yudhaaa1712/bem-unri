@@ -7,6 +7,7 @@ use App\Http\Controllers\StudentInfoController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\StudentInfoController as AdminStudentInfoController;
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 
 /*
@@ -100,6 +101,9 @@ Route::prefix('api')->group(function () {
     
     // Student Info API
     Route::get('/student-info', [StudentInfoController::class, 'index'])->name('api.student.info');
+    Route::get('/student-info/category/{category}', [StudentInfoController::class, 'byCategory'])->name('api.student.info.category');
+    Route::get('/student-info/{id}', [StudentInfoController::class, 'show'])->name('api.student.info.show');
+    Route::get('/student-info/search', [StudentInfoController::class, 'search'])->name('api.student.info.search');
     
     // Events API (Public - untuk frontend Timeline)
     Route::prefix('events')->group(function () {
@@ -149,6 +153,11 @@ Route::prefix('admin')->name('admin.')->middleware('admin.auth')->group(function
         return view('admin.news.index');
     })->name('news.index');
     
+    // Student Info management
+    Route::get('/student-info', function () {
+        return view('admin.student-info.index');
+    })->name('student-info.index');
+    
     // Events management
     Route::get('/events', function () {
         return view('admin.events.index');
@@ -182,6 +191,18 @@ Route::prefix('api/admin')->name('admin.api.')->middleware('admin.auth')->group(
         Route::delete('/{news}', [AdminNewsController::class, 'destroy'])->name('destroy');
         Route::post('/{news}/toggle-publish', [AdminNewsController::class, 'togglePublish'])->name('toggle');
         Route::post('/bulk-delete', [AdminNewsController::class, 'bulkDelete'])->name('bulk-delete');
+    });
+    
+    // Student Info API
+    Route::prefix('student-info')->name('student-info.')->group(function () {
+        Route::get('/stats', [AdminStudentInfoController::class, 'stats'])->name('stats');
+        Route::get('/', [AdminStudentInfoController::class, 'index'])->name('index');
+        Route::post('/', [AdminStudentInfoController::class, 'store'])->name('store');
+        Route::get('/{studentInfo}', [AdminStudentInfoController::class, 'show'])->name('show');
+        Route::put('/{studentInfo}', [AdminStudentInfoController::class, 'update'])->name('update');
+        Route::delete('/{studentInfo}', [AdminStudentInfoController::class, 'destroy'])->name('destroy');
+        Route::post('/{studentInfo}/toggle-publish', [AdminStudentInfoController::class, 'togglePublish'])->name('toggle');
+        Route::post('/bulk-delete', [AdminStudentInfoController::class, 'bulkDelete'])->name('bulk-delete');
     });
     
     // Events API
